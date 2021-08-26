@@ -1,7 +1,7 @@
 from TicTacToe.Interface_code.MainWindow import Ui_MainWindow
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtWidgets
-from TicTacToe.Interface_code.TicTacToe import TicTacToe
+from TicTacToe.TicTacToe import TicTacToe
 import sys
 
 
