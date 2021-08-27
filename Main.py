@@ -1,8 +1,11 @@
-from TicTacToe.Interface_code.MainWindow import Ui_MainWindow
+import sys
+
+from Interface_code.MainWindow import Ui_MainWindow
+from TicTacToe import TicTacToe
+from FileIO import File_Json
+
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtWidgets
-from TicTacToe.TicTacToe import TicTacToe
-import sys
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -16,6 +19,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # tic tac toe logic class
         self.tc = TicTacToe()
+
+        # load scores
+        self.load_scores()
 
         # connect button
         self.buttons = [self.ui.r1_c1, self.ui.r1_c2, self.ui.r1_c3,
@@ -40,6 +46,19 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusBar().setStyleSheet("QLabel{font-weight:bold;color:grey}QStatusBar{border :1px solid gray;padding-left:8px;background:rgba(0,0,0,0);color:black;font-weight:bold;}")
         self.statusBar().addPermanentWidget(self.bar_label)
 
+    def load_scores(self):
+        file = File_Json()
+
+        data = file.load() #output dict
+        scores = [self.ui.points_x, self.ui.points_o]
+        for label, text in zip(scores, data.values()):
+            print(label.setText(str(text)))
+
+    def update_scores(self, what_XO):
+        file = File_Json()
+        file.increase_xo_1(what_XO)
+        self.load_scores()
+
     def reset_button(self):
         for button in self.buttons:
             button.setEnabled(True)
@@ -59,16 +78,17 @@ class MainWindow(QtWidgets.QMainWindow):
             btn.setText(self.current_move)
             self.tc.set_move(position, self.current_move)
             btn.setEnabled(False)
-            win_state = self.tc.check_if_winning_position()
+            win_state = self.tc.check_if_winning_position(self.current_move)
             if win_state[0]:
                 self.bar(f"Win {self.current_move}")
-                self.end_of_game(win_state[1])
+                self.end_of_game(win_state[1], self.current_move)
                 return
             self.switch()
         else:
             self.bar("an impossible move")
 
-    def end_of_game(self, winning_position):
+    def end_of_game(self, winning_position, who):
+
         for position in winning_position:
             self.buttons[position].setStyleSheet("QPushButton{border: 4px solid lightgreen;}")
             self.statusBar().setStyleSheet(
@@ -76,6 +96,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.set_off_buttons()
         print(winning_position)
+        print(who)
+        self.update_scores(who)
 
     def set_off_buttons(self):
         for btn in self.buttons:

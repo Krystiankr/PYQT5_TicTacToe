@@ -2,17 +2,16 @@ class TicTacToe:
     def __init__(self):
         self.reset_moves()
 
-    def check_if_winning_position(self) -> (bool, []):
+    def check_if_winning_position(self, x_o) -> (bool, []):
         winning_positions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 
-        for X_O in ["X", "O"]:
-            for position in winning_positions:
-                tmp = True
-                for pos in position:
-                    if self.moves[pos] != X_O:
-                        tmp = False
-                if tmp:
-                    return True, position
+        for position in winning_positions:
+            tmp = True
+            for pos in position:
+                if self.moves[pos] != x_o:
+                    tmp = False
+            if tmp:
+                return True, position
         return False, []
 
     def set_move(self, position, who):
