@@ -45,14 +45,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def load_scores(self):
         file = File_Json()
-        data = file.load() #output dict
+        data = file.return_data() #output dict
         scores = [self.ui.points_x, self.ui.points_o]
         for label, text in zip(scores, data.values()):
             print(label.setText(str(text)))
 
-    def update_scores(self, what_XO):
+    def update_scores(self, what_x_o):
         file = File_Json()
-        file.increase_xo_1(what_XO)
+        file.increase_1(what_x_o)
         self.load_scores()
 
     def reset_button(self):

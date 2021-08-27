@@ -2,39 +2,32 @@ import json
 
 class File_Json():
     def __init__(self):
+        # Load data from json file
+        with open("data.json") as f:
+            self.data = json.load(f)
 
-            with open("data.json") as f:
-                self.data = json.load(f)
-
-    def load(self):
+    # Return dict {"X": 14, "O": 5}
+    def return_data(self):
         for element in self.data['Points']:
             print(element, end=' value:')
             print(self.data['Points'][element])
         return self.data['Points']
 
-    def refresh_data(self, what_XO, count):
+    def increase_1(self, x_or_o):
         with open("data.json") as f:
             data = json.load(f)
             print(data)
-        data['Points'][what_XO] = count
+        data['Points'][x_or_o] += 1
 
         with open("data.json", "w") as f:
             json.dump(data, f)
 
-    def increase_xo_1(self, what_XO):
-        with open("data.json") as f:
-            data = json.load(f)
-            print(data)
-        data['Points'][what_XO] += 1
-
-        with open("data.json", "w") as f:
-            json.dump(data, f)
-
+    # Ignore this, is just to initialize the json file
     def save(self):
         data = {}
         data['Points'] = {
             "X": 0,
-            "O": 3
+            "O": 0
         }
         with open("data.json", "w") as f:
             json.dump(data, f)

@@ -17,7 +17,7 @@ class TicTacToe:
     def set_move(self, position, who):
         self.moves[position] = who
 
-    def print_board(self):
+    def print_board(self): # interesting to list an array, but not useful at the moment
         for i, row in enumerate(self.moves):
             move = 0 if row == "" else row
             print(move, end=' ') if ((i+1) % 3 != 0) else print(move)
