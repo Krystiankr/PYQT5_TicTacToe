@@ -59,12 +59,12 @@ class MainWindow(QtWidgets.QMainWindow):
         for button in self.buttons:
             button.setEnabled(True)
             button.setText("")
-        self.current_move = "X"
         self.ui.current_move.setText(self.current_move)
         for btn in self.buttons:
             btn.setStyleSheet("")
         self.tc.reset_moves()
-        self.bar("Reset")
+        self.switch_current_move()
+        self.bar("Switch & Reset")
 
     def bar(self, text):
         self.bar_label.setText(text)
@@ -88,7 +88,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.buttons[position].setStyleSheet("QPushButton{border: 4px solid lightgreen;}")
             self.statusBar().setStyleSheet(
                 "QLabel{font-weight:bold;color:grey}QStatusBar{border :1px solid gray;padding-left:8px;background:rgba(0,0,0,0);color:black;font-weight:bold;}")
-
         self.turn_off_buttons()
         self.update_scores(who)
 
@@ -100,9 +99,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.current_move.setText(self.current_move)
 
     def switch_current_move(self):
-        self.current_move = "O" if self.current_move == "X" else "X"
+        self.current_move = ("O" if self.current_move == "X" else "X")
         self.change_display_current_move()
-        return self.current_move
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
