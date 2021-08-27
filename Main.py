@@ -67,7 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for btn in self.buttons:
             btn.setStyleSheet("")
         self.tc.reset_moves()
-        self.bar("Reset")
+        self.bar("Resett")
 
     def bar(self, text):
         self.bar_label.setText(text)
