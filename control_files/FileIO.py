@@ -2,14 +2,11 @@ import json
 
 class File_Json():
     def __init__(self):
-        try:
+
             with open("data.json") as f:
                 self.data = json.load(f)
-        except Exception:
-            pass
 
     def load(self):
-        print("xxx")
         for element in self.data['Points']:
             print(element, end=' value:')
             print(self.data['Points'][element])

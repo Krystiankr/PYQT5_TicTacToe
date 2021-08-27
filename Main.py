@@ -1,12 +1,11 @@
 import sys
 
 from Interface_code.MainWindow import Ui_MainWindow
-from TicTacToe import TicTacToe
-from FileIO import File_Json
+from control_files.TicTacToe import TicTacToe
+from control_files.FileIO import File_Json
 
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtWidgets
-
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
