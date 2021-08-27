@@ -3,7 +3,7 @@ import json
 class File_Json():
     def __init__(self):
         # Load data from json file
-        with open("data.json") as f:
+        with open("control_files/data.json") as f:
             self.data = json.load(f)
 
     # Return dict {"X": 14, "O": 5}
@@ -14,12 +14,12 @@ class File_Json():
         return self.data['Points']
 
     def increase_1(self, x_or_o):
-        with open("data.json") as f:
+        with open("control_files/data.json") as f:
             data = json.load(f)
             print(data)
         data['Points'][x_or_o] += 1
 
-        with open("data.json", "w") as f:
+        with open("control_files/data.json", "w") as f:
             json.dump(data, f)
 
     # Ignore this, is just to initialize the json file
@@ -29,6 +29,6 @@ class File_Json():
             "X": 0,
             "O": 0
         }
-        with open("data.json", "w") as f:
+        with open("control_files/data.json", "w") as f:
             json.dump(data, f)
 
