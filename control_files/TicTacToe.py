@@ -30,3 +30,12 @@ class TicTacToe:
         self.moves = ["", "", "",
                       "", "", "",
                       "", "", ""]
+
+    def available_moves(self):
+        return [i for i, el in enumerate(self.moves) if el == ""]
+
+    def clean_move(self, pos):
+        self.moves[pos] = ""
+    # winning moves
+    # blocked moves
+    # random

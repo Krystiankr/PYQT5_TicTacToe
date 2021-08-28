@@ -1,11 +1,15 @@
 import sys
+from random import choice
 
+from Interface_code.AnimatedToggle import AnimatedToggle
 from Interface_code.MainWindow import Ui_MainWindow
+
 from control_files.TicTacToe import TicTacToe
 from control_files.FileIO import File_Json
 
 from PyQt5.QtWidgets import QLabel
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QVBoxLayout
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -38,10 +42,51 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.r3_c3.clicked.connect(lambda: self.clicked_button(self.ui.r3_c3, 8))
         self.ui.reset_button.clicked.connect(self.reset_button)
 
+        self.ui.reset_button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.ui.reset_button.customContextMenuRequested.connect(self.test)
+
         # Status bar, it informs you about current changes
         self.bar_label = QLabel("Welcome")
         self.statusBar().setStyleSheet("QLabel{font-weight:bold;color:grey}QStatusBar{border :1px solid gray;padding-left:8px;background:rgba(0,0,0,0);color:black;font-weight:bold;}")
         self.statusBar().addPermanentWidget(self.bar_label)
+
+        mainToggle = AnimatedToggle()
+        secondaryToggle = AnimatedToggle(
+            checked_color="#FFB000",
+            pulse_checked_color="#44FFB000"
+        )
+
+        self.mainToggle = AnimatedToggle()
+        self.mainToggle.setFixedSize(mainToggle.sizeHint())
+        self.ui.horizontalLayout_7.addWidget(self.mainToggle, alignment=QtCore.Qt.AlignLeft)
+        self.mainToggle.stateChanged.connect(self.Toggle)
+        self.ui.horizontalLayout_7.setContentsMargins(0, 0, 20, 0)
+
+        self.clicked_button(self.buttons[0], 0)
+        self.clicked_button(self.buttons[3], 3)
+        self.clicked_button(self.buttons[4], 4)
+        self.clicked_button(self.buttons[4], 4)
+
+        self.ui.test_button.clicked.connect(self.edited)
+
+    def edited(self):
+        move = int(self.ui.edit_space.text())
+        if move >= 0 and move <= 8:
+            self.clean_move(move)
+            self.ui.edit_space.setText("")
+        else:
+            print("number out of range")
+
+
+    def test(self):
+        print(self.tc.available_moves())
+
+    def Toggle(self):
+        if self.mainToggle.isChecked() == True:
+            self.ui.o_label.setText("[PC]")
+        else:
+            self.ui.o_label.setText("[P]")
+        #print("efect")
 
     def load_scores(self):
         file = File_Json()
@@ -99,8 +144,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.current_move.setText(self.current_move)
 
     def switch_current_move(self):
+
         self.current_move = ("O" if self.current_move == "X" else "X")
         self.change_display_current_move()
+        if self.current_move == "O" and self.ui.o_label.text() == "[PC]":
+            print("TT")
+            print()
+            rand_pos = self.tc.available_moves()
+            choice_pos = choice(rand_pos)
+            print()
+            #self.tc.set_move(choice_pos, self.current_move)
+            self.clicked_button(self.buttons[choice_pos], choice_pos)
+
+    def winning_moves(self):
+        pass
+
+    def clean_move(self, pos):
+        if self.buttons[pos].text() != "":
+            self.buttons[pos].setText("")
+            self.tc.clean_move(pos)
+            self.buttons[pos].setEnabled(True)
+            self.switch_current_move()
+        else:
+            print("pass")
 
 
 if __name__ == "__main__":
